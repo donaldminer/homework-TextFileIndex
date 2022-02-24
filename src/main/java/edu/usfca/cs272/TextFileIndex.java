@@ -1,6 +1,10 @@
 package edu.usfca.cs272;
 
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -10,10 +14,8 @@ import java.util.List;
  * @author CS 272 Software Development (University of San Francisco)
  * @version Spring 2022
  */
-public class TextFileIndex {
-	// TODO Implement the ForwardIndex interface for Path objects
-	// TODO Modify this class as necessary
-
+public class TextFileIndex implements ForwardIndex<Path>{	
+	private HashMap<Path, List<String>> map;
 	/**
 	 * Demonstrates this class. If this method does not compile, then the
 	 * {@link TextFileIndex} class is not properly implementing the
@@ -22,13 +24,57 @@ public class TextFileIndex {
 	 * @param args unused
 	 */
 	public static void main(String[] args) {
-		ForwardIndex<Path> index = new TextFileIndex();
-
+		TextFileIndex index = new TextFileIndex();
+		
 		index.add(Path.of("hello.txt"), List.of("hello", "hola"));
 		index.add(Path.of("letters.txt"), List.of("a", "b", "c", "c"));
 		index.add(Path.of("letters.txt"), List.of("b", "e"));
 		index.add(Path.of("planets.txt"), List.of("earth", "mars"));
 
 		System.out.println(index);
+	}
+	
+	public TextFileIndex() {
+		this.map = new HashMap<Path, List<String>>();
+	}
+
+	@Override
+	public void add(Path location, String word) {
+		this.map.put(location, List.of(word));
+	}
+
+	@Override
+	public int size() {
+		return this.map.size();
+	}
+
+	@Override
+	public int size(Path location) {
+		return this.map.get(location).size();
+	}
+
+	@Override
+	public boolean contains(Path location) {
+		return this.map.containsKey(location);
+	}
+
+	@Override
+	public boolean contains(Path location, String word) {
+		return this.map.containsKey(location) && this.map.containsValue(List.of(word));
+	}
+
+	@Override
+	public Collection<Path> get() {
+		return Collections.unmodifiableCollection(this.map.keySet());
+	}
+
+	@Override
+	public Collection<String> get(Path location) {
+		return Collections.unmodifiableCollection(this.map.get(location));
+	}
+	
+	@Override
+	public String toString() {
+		return this.map.toString();
 	}
 }

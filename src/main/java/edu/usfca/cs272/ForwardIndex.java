@@ -31,7 +31,10 @@ public interface ForwardIndex<E> {
 	 */
 	public default void add(E location, List<String> words) {
 		// TODO Add default add(E, List) implementation
-		throw new UnsupportedOperationException("Not yet implemented.");
+		//throw new UnsupportedOperationException("Not yet implemented.");
+		for(String s : words) {
+			this.add(location, s);
+		}
 	}
 
 	/**
@@ -51,7 +54,12 @@ public interface ForwardIndex<E> {
 	 */
 	public default void addAll(ForwardIndex<E> other) {
 		// TODO Add default addAll implementation
-		throw new UnsupportedOperationException("Not yet implemented.");
+		//throw new UnsupportedOperationException("Not yet implemented.");
+		for(E location : other.get() ) {
+			for(String s: other.get(location)) {
+				add(location, s);
+			}
+		}
 	}
 
 	/**
