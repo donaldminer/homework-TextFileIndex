@@ -41,11 +41,10 @@ public class TextFileIndex implements ForwardIndex<Path>{
 
 	@Override
 	public void add(Path location, String word) {
-		if(this.map.containsKey(location)) {
-			this.map.remove(location, this.map.get(location));
+		if(!this.map.containsKey(location) || this.map.containsKey(location) && this.map.get(location).equals(List.of(word))) {
 			this.map.put(location, List.of(word));
 		} else {
-			this.map.put(location, List.of(word));			
+			this.map.put(location, List.of(word, this.map.get(location).toString()));
 		}
 	}
 	
