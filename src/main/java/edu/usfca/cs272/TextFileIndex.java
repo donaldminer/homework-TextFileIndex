@@ -2,11 +2,9 @@ package edu.usfca.cs272;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -35,7 +33,10 @@ public class TextFileIndex implements ForwardIndex<Path>{
 
 		System.out.println(index);
 	}
-	
+	/**
+	 * Constructor Method for TextFileIndex Class, creates a new HashMap
+	 * for Path and List storage.
+	 * */
 	public TextFileIndex() {
 		this.map = new HashMap<Path, List<String>>();
 	}
@@ -54,7 +55,12 @@ public class TextFileIndex implements ForwardIndex<Path>{
 		this.map.put(location, newList);
 	}
 	
-
+	/**
+	 * Returns the number of locations stored in the index.
+	 *
+	 * @return 0 if the index is empty, otherwise the number of locations in the
+	 *   index
+	 */
 	@Override
 	public int size() {
 		if(this.map.isEmpty()) {
@@ -63,6 +69,13 @@ public class TextFileIndex implements ForwardIndex<Path>{
 		return this.map.size();
 	}
 
+	/**
+	 * Returns the number of words stored for the given path.
+	 *
+	 * @param location the location to lookup
+	 * @return 0 if the location is not in the index or has no words, otherwise
+	 *   the number of words stored for that element
+	 */
 	@Override
 	public int size(Path location) {
 		if(this.map.containsKey(location)) {
@@ -71,21 +84,50 @@ public class TextFileIndex implements ForwardIndex<Path>{
 		return 0;
 	}
 
+	/**
+	 * Determines whether the location is stored in the index.
+	 *
+	 * @param location the location to lookup
+	 * @return {@true} if the location is stored in the index
+	 */
 	@Override
 	public boolean contains(Path location) {
 		return this.map.containsKey(location);
 	}
 
+	/**
+	 * Determines whether the location is stored in the index and the word is
+	 * stored for that location.
+	 *
+	 * @param location the location to lookup
+	 * @param word the word in that location to lookup
+	 * @return {@true} if the location and word is stored in the index
+	 */
 	@Override
 	public boolean contains(Path location, String word) {
 		return this.map.containsKey(location) && this.map.containsValue(List.of(word));
 	}
 
+	/**
+	 * Returns an unmodifiable view of the locations stored in the index.
+	 *
+	 * @return an unmodifiable view of the locations stored in the index
+	 * @see Collections#unmodifiableCollection(Collection)
+	 */
 	@Override
 	public Collection<Path> get() {
 		return Collections.unmodifiableCollection(this.map.keySet());
 	}
 
+	/**
+	 * Returns an unmodifiable view of the words stored in the index for the
+	 * provided location, or an empty collection if the location is not in the
+	 * index.
+	 *
+	 * @param location the location to lookup
+	 * @return an unmodifiable view of the words stored for the location
+	 * @see Collections#unmodifiableCollection(Collection)
+	 */
 	@Override
 	public Collection<String> get(Path location) {
 		if(this.map.containsKey(location)) {
@@ -94,6 +136,10 @@ public class TextFileIndex implements ForwardIndex<Path>{
 		return Collections.emptyList();
 	}
 	
+	/**
+	 * Creates a String form of index
+	 * @return HashMap in String form
+	 */
 	@Override
 	public String toString() {
 		return this.map.toString();
