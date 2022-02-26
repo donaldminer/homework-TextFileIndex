@@ -2,6 +2,7 @@ package edu.usfca.cs272;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,11 +42,16 @@ public class TextFileIndex implements ForwardIndex<Path>{
 
 	@Override
 	public void add(Path location, String word) {
-		if(!this.map.containsKey(location) || this.map.containsKey(location) && this.map.get(location).equals(List.of(word))) {
-			this.map.put(location, List.of(word));
-		} else {
-			this.map.put(location, List.of(word, this.map.get(location).toString()));
+		List<String> newList = new ArrayList<>();
+		newList.add(word);
+		if(this.map.containsKey(location)) {
+			for(String s : this.map.get(location)) {
+				if(!newList.contains(s)) {
+					newList.add(s);
+				}
+			}
 		}
+		this.map.put(location, newList);
 	}
 	
 
